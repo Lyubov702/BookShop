@@ -1,28 +1,33 @@
-package sample;
+package sample.controller;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import sample.util.Configs;
+import sample.util.Const;
+import sample.model.*;
+
 import java.sql.*;
 
-public class DataBase extends Configs {
+import static sample.util.Configs.*;
 
-    Connection dbConection;
+public class DataBase   {
 
-    public Connection getDbConection()
+    Connection connection;
+
+    public Connection getDbConnection()
             throws ClassNotFoundException, SQLException {
 
 
-        String conectionString = "jdbc:mysql://" + dbHost + ":"
+        String connectionString = "jdbc:mysql://" + dbHost + ":"
                 + dbPort + "/" + dbName + "?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Europe/Moscow";
 
         Class.forName("com.mysql.cj.jdbc.Driver");
-        dbConection = DriverManager.getConnection(conectionString, dbUser, dbPass);
+        connection = DriverManager.getConnection(connectionString, dbUser, dbPass);
 
-        return dbConection;
+        return connection;
     }
 
     public boolean addOrder(Order order) throws SQLException, ClassNotFoundException {
-
 
         String insert = String.format("INSERT INTO %1$s (%2$s,%3$s,%4$s,%5$s)" +
                         " VALUES(?,?,?,?)",
@@ -30,11 +35,11 @@ public class DataBase extends Configs {
                 Const.BOOK_ID,
                 Const.CUSTOMER_ID,
                 Const.ORDER_DATEOFBUY,
-                Const.ORDER_EMPLOYEE);
+                Const.EMPLOYEE_ID);
 
         PreparedStatement prSt = null;
         try {
-            prSt = getDbConection().prepareStatement(insert);
+            prSt = getDbConnection().prepareStatement(insert);
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -43,7 +48,7 @@ public class DataBase extends Configs {
             prSt.setInt(1, order.getBookId());
             prSt.setInt(2, order.getCustomerId());
             prSt.setString(3, order.getDate());
-            prSt.setString(4, order.getEmployee());
+            prSt.setInt(4, order.getEmployeeId());
 
             prSt.execute();
         } catch (SQLException e) {
@@ -67,7 +72,7 @@ public class DataBase extends Configs {
 
         PreparedStatement prSt = null;
         try {
-            prSt = getDbConection().prepareStatement(insert);
+            prSt = getDbConnection().prepareStatement(insert);
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -76,7 +81,7 @@ public class DataBase extends Configs {
             prSt.setString(1, book.getBook());
             prSt.setString(2, book.getGenre());
             prSt.setString(3, book.getAuthor());
-            prSt.setInt(4, (int) book.getPrice());
+            prSt.setInt(4, book.getPrice());
 
             prSt.execute();
         } catch (SQLException e) {
@@ -87,23 +92,25 @@ public class DataBase extends Configs {
     }
 
     //ДОБАВЛЕНИЕ КЛИЕНТА В БД
-    public boolean addCustomer (Customer cust) throws SQLException, ClassNotFoundException {
+    public boolean addCustomer (Customer cust) throws ClassNotFoundException {
 
 
-        String insert = String.format("INSERT INTO %1$s (%2$s)" +
-                        " VALUES(?)",
+        String insert = String.format("INSERT INTO %1$s (%2$s,%3$s)" +
+                        " VALUES(?,?)",
                 Const.CUSTOMER_TABLE,
-                Const.NAME);
+                Const.NAME,
+                Const.CUSTOMER_PHONE);
 
         PreparedStatement prSt = null;
         try {
-            prSt = getDbConection().prepareStatement(insert);
+            prSt = getDbConnection().prepareStatement(insert);
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
 
         try {
             prSt.setString(1, cust.getCustomer());
+            prSt.setInt(2, cust.getPhoneNumber());
 
             prSt.execute();
         } catch (SQLException e) {
@@ -117,17 +124,20 @@ public class DataBase extends Configs {
 
         ResultSet resSet = null;
 
-        String select = "SELECT * FROM  " + Const.ORDER_TABLE + " INNER JOIN " +
+        String select = "SELECT * FROM  " + Const.ORDER_TABLE
+                + " INNER JOIN " +
                 Const.BOOKS_TABLE + " ON custom.bookId = books.id "
                 + " INNER JOIN " +
-                Const.CUSTOMER_TABLE + " ON custom.customerId = customers.id  ";
+                Const.CUSTOMER_TABLE + " ON custom.customerId = customers.id"
+                + " INNER JOIN " +
+                Const.EMPLOYEE_TABLE + " ON custom.employeeId = employee.id";
 
         /*
         custom. id -1
         bookId - 2
         customerId -3
         date - 4
-        empl -5
+        emplId -5
         book.id -6
         book -7
         genre - 8
@@ -135,10 +145,15 @@ public class DataBase extends Configs {
         price - 10
         customer.id -11
         name -12
+        phoneNumber - 13
+        empl.id - 14
+        empl.name - 15
+        education - 16
+
          */
 
         try {
-            PreparedStatement prSt = getDbConection().prepareStatement(select);
+            PreparedStatement prSt = getDbConnection().prepareStatement(select);
             resSet= prSt.executeQuery();
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -156,7 +171,8 @@ public class DataBase extends Configs {
                         resSet.getString(9),
                         resSet.getInt(10),
                         resSet.getString(4),
-                        resSet.getString(5),
+                        resSet.getString(15),
+                        resSet.getInt(5),
                         resSet.getInt(2),
                         resSet.getInt(3)
                         );
@@ -177,7 +193,7 @@ public class DataBase extends Configs {
         String select = "SELECT * FROM " + Const.BOOKS_TABLE;
 
         try {
-            PreparedStatement prSt = getDbConection().prepareStatement(select);
+            PreparedStatement prSt = getDbConnection().prepareStatement(select);
             resSet= prSt.executeQuery();
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -204,6 +220,37 @@ public class DataBase extends Configs {
         return result;
     }
 
+    //ПОЛУЧЕНИЕ РАБОТНИКА ИЗ БД
+    public ObservableList<Employee> getEmployee() {
+
+        ResultSet resSet = null;
+
+        String select = "SELECT * FROM " + Const.EMPLOYEE_TABLE;
+
+        try {
+            PreparedStatement prSt = getDbConnection().prepareStatement(select);
+            resSet= prSt.executeQuery();
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        ObservableList<Employee> result = FXCollections.observableArrayList();
+
+        try {
+            while(resSet.next()) {
+                Employee employee = new Employee(
+                        resSet.getInt(1), //id
+                        resSet.getString(2), //name
+                        resSet.getString(3) //education
+                );
+                result.add(employee);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
     //ПОЛУЧЕНИЕ КЛИЕНТА ИЗ БД
     public ObservableList<Customer> getCustomer() {
 
@@ -212,7 +259,7 @@ public class DataBase extends Configs {
         String select = "SELECT * FROM " + Const.CUSTOMER_TABLE;
 
         try {
-            PreparedStatement prSt = getDbConection().prepareStatement(select);
+            PreparedStatement prSt = getDbConnection().prepareStatement(select);
             resSet= prSt.executeQuery();
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -224,8 +271,8 @@ public class DataBase extends Configs {
             while(resSet.next()) {
                 Customer customer = new Customer(
                         resSet.getInt(1),
-                        resSet.getString(2)
-                );
+                        resSet.getString(2),
+                        resSet.getInt(3));
 
                 result.add(customer);
             }
@@ -236,18 +283,18 @@ public class DataBase extends Configs {
     }
 
 
-    public boolean editOrder(Order newOrder) throws SQLException, ClassNotFoundException {
+    public boolean editOrder(Order newOrder) {
 
         String edit = "UPDATE " + Const.ORDER_TABLE + " SET " +
                 Const.BOOK_ID + "=?, "
                 + Const.CUSTOMER_ID + "=?, "
                 + Const.ORDER_DATEOFBUY + "=?, "
-                + Const.ORDER_EMPLOYEE + "=? " +
+                + Const.EMPLOYEE_ID + "=? " +
                 " WHERE "+ Const.ORDER_ID + "=? ";
 
         PreparedStatement prSt = null;
         try {
-            prSt = getDbConection().prepareStatement(edit);
+            prSt = getDbConnection().prepareStatement(edit);
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -257,7 +304,7 @@ public class DataBase extends Configs {
             prSt.setInt(1, newOrder.getBookId());
             prSt.setInt(2, newOrder.getCustomerId());
             prSt.setString(3, newOrder.getDate());
-            prSt.setString(4, newOrder.getEmployee());
+            prSt.setInt(4, newOrder.getEmployeeId());
             prSt.setInt(5, newOrder.getId());
 
             prSt.executeUpdate();
@@ -272,11 +319,9 @@ public class DataBase extends Configs {
         String edit = "DELETE FROM " + Const.ORDER_TABLE + " WHERE " +
                 Const.ORDER_ID + "=?";
 
-
-
         PreparedStatement prSt = null;
         try {
-            prSt = getDbConection().prepareStatement(edit);
+            prSt = getDbConnection().prepareStatement(edit);
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -290,4 +335,34 @@ public class DataBase extends Configs {
         }
         return true;
     }
+
+    public boolean addEmployee(Employee employee) throws SQLException, ClassNotFoundException{
+        String insert = String.format("INSERT INTO %1$s (%2$s,%3$s)" +
+                        " VALUES(?,?)",
+                Const.EMPLOYEE_TABLE,
+                Const.NAME,
+                Const.EMPLOYEE_EDUCATION);
+
+        PreparedStatement prSt = null;
+        try {
+            prSt = getDbConnection().prepareStatement(insert);
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            prSt.setString(1, employee.getEmployee());
+            prSt.setString(2, employee.getEducation());
+
+            prSt.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+        }
+        return true;
+    }
+
+
+
+
 }

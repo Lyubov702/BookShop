@@ -1,4 +1,4 @@
-package sample;
+package sample.controller;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
+import sample.model.*;
 
 public class EditNoteController {
 
@@ -30,7 +31,7 @@ public class EditNoteController {
     private ChoiceBox<Book> bookChoiceBox;
 
     @FXML
-    private TextField employeeField;
+    private ChoiceBox<Employee> employeeChoiceBox;
 
     public OrderWithData selectedOrder;
 
@@ -39,8 +40,9 @@ public class EditNoteController {
     @FXML
     void initialize() {
         EditButton.setOnAction(event -> EditOrder());
-        bookChoiceBox.setItems( db.getBook());
+        bookChoiceBox.setItems(db.getBook());
         customerChoiceBox.setItems(db.getCustomer());
+        employeeChoiceBox.setItems(db.getEmployee());
 
     }
 
@@ -49,7 +51,9 @@ public class EditNoteController {
         customerChoiceBox.setValue(findCustomerById(selectedOrder.getCustomerId()));
         bookChoiceBox.setValue(findBookById(selectedOrder.getBookId()));
         dateOfBuyField.setText(selectedOrder.getDateOfBuy());
-        employeeField.setText(selectedOrder.getEmployee());
+        employeeChoiceBox.setValue(findEmployeeById(selectedOrder.getEmployeeId()));
+
+        // employeeField.setText(selectedOrder.getEmployee());
     }
 
     private Customer findCustomerById(int customerId) {
@@ -71,22 +75,28 @@ public class EditNoteController {
         return null;
     }
 
-    private void EditOrder() {
+    private Employee findEmployeeById(int employeeId) {
+        for (Employee employee : employeeChoiceBox.getItems()) {
+            if (employee.getId() == employeeId) {
+                return employee;
+            }
+        }
+        return null;
+    }
+
+
+    private void EditOrder()  {
         DataBase db = new DataBase();
 
         selectedOrder.setDateOfBuy(dateOfBuyField.getText());
-        selectedOrder.setEmployee(employeeField.getText());
+        selectedOrder.setEmployeeId(employeeChoiceBox.getValue().getId());
 
-      selectedOrder.setCustomerId(customerChoiceBox.getValue().getId());
-      selectedOrder.setBookId(bookChoiceBox.getValue().getId());
+        selectedOrder.setCustomerId(customerChoiceBox.getValue().getId());
+        selectedOrder.setBookId(bookChoiceBox.getValue().getId());
 
 
-        try {
-            db.editOrder(new Order(selectedOrder.getId(), selectedOrder.getBookId(),
-                    selectedOrder.getCustomerId(), selectedOrder.getDateOfBuy(), selectedOrder.getEmployee()));
-        } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+        db.editOrder(new Order(selectedOrder.getId(), selectedOrder.getBookId(),
+                selectedOrder.getCustomerId(), selectedOrder.getDateOfBuy(), selectedOrder.getEmployeeId()));
 
         EditButton.getScene().getWindow().hide();
     }

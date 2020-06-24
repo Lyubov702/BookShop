@@ -1,4 +1,4 @@
-package sample;
+package sample.model;
 
 public class Order {
 
@@ -6,14 +6,14 @@ public class Order {
     private int bookId;
     private int customerId;
     private String date;
-    private String employee;
+    private int employeeId;
 
-    public Order(int id, int bookId, int customerId, String date,String employee) {
+    public Order(int id, int bookId, int customerId, String date,int employeeId) {
         this.id = id;
         this.bookId = bookId;
         this.customerId = customerId;
         this.date = date;
-        this.employee = employee;
+        this.employeeId = employeeId;
     }
 
     public int getId() {
@@ -48,11 +48,11 @@ public class Order {
         this.date = date;
     }
 
-    public String getEmployee() {
-        return employee;
+    public int getEmployeeId() {
+        return employeeId;
     }
 
-    public void setEmployee(String employee) {
-        this.employee = employee;
+    public void setEmployeeId(int employeeId) {
+        this.employeeId = employeeId;
     }
 }

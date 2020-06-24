@@ -1,4 +1,4 @@
-package sample;
+package sample.controller;
 
 import java.io.IOException;
 import java.net.URL;
@@ -15,6 +15,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
+import sample.model.Employee;
+import sample.model.OrderWithData;
+import sample.model.Book;
+import sample.model.Customer;
 
 public class MainFormController {
 
@@ -25,14 +29,16 @@ public class MainFormController {
     private URL location;
 
     @FXML
-    private TableView<Customer> tableCustomers;
+    private TableView<sample.model.Customer> tableCustomers;
     @FXML
     private TableColumn<Customer, String> Customer11;
+    @FXML
+    private TableColumn<Customer, Integer> Phone;
     @FXML
     private Button AddCustomer;
 
     @FXML
-    private TableView<Book> tableBook;
+    private TableView<sample.model.Book> tableBook;
     @FXML
     private TableColumn<Book, Integer> Price1;
     @FXML
@@ -67,10 +73,23 @@ public class MainFormController {
     @FXML
     private TableColumn<OrderWithData, String> Genre;
 
+    @FXML
+    private TableView<Employee> tableEmployee;
+
+    @FXML
+    private TableColumn<Employee, String> employeeName;
+
+    @FXML
+    private TableColumn<Employee, String> education;
+
+    @FXML
+    private Button addEmployeeButton;
+
 
     private ObservableList<OrderWithData> orders = FXCollections.observableArrayList();
     private ObservableList<Book> books = FXCollections.observableArrayList();
     private ObservableList<Customer> customers = FXCollections.observableArrayList();
+    private ObservableList<Employee> employees = FXCollections.observableArrayList();
 
     @FXML
     void initialize() {
@@ -106,12 +125,23 @@ public class MainFormController {
 
         tableCustomers.setEditable(false);
         Customer11.setCellValueFactory(cellData->cellData.getValue().customerProperty());
-
+        Phone.setCellValueFactory(cellData->cellData.getValue().phoneNumberProperty().asObject());
         customers.clear();
         customers.addAll(new DataBase().getCustomer());
         tableCustomers.setItems(customers);
-
         tableCustomers.getSelectionModel().clearSelection();
+
+
+        tableEmployee.setEditable(false);
+        employeeName.setCellValueFactory(cellData->cellData.getValue().employeeProperty());
+        education.setCellValueFactory(cellData->cellData.getValue().educationProperty());
+
+
+        employees.clear();
+        employees.addAll(new DataBase().getEmployee());
+        tableEmployee.setItems(employees);
+        tableEmployee.getSelectionModel().clearSelection();
+
 
 
         Add.setOnAction(event -> {
@@ -132,6 +162,29 @@ public class MainFormController {
        addBook.setOnAction(event -> {
            addBook();
        });
+
+        addEmployeeButton.setOnAction(event -> {
+            addEmployee();
+        });
+
+    }
+
+    private void addEmployee() {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/forms/AddEmployee.fxml"));
+        try {
+            loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Parent root = loader.getRoot();
+        Stage stage = new Stage();
+        stage.setScene(new Scene(root));
+        stage.showAndWait();
+
+        employees.clear();
+        employees.addAll(new DataBase().getEmployee());
+        tableEmployee.setItems(employees);
     }
 
     private void addCustomer() {
@@ -171,7 +224,6 @@ public class MainFormController {
     }
 
     private void delete() {
-
         db.deleteOrder(tableOrders.getSelectionModel().getSelectedItem());
       updateData();
     }
@@ -185,7 +237,6 @@ public class MainFormController {
     }
 
     private void openEdit() {
-
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/forms/EditNote.fxml"));
         try {
@@ -202,7 +253,6 @@ public class MainFormController {
     }
 
     private void openAdd() {
-
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/forms/AddNote.fxml"));
         try {

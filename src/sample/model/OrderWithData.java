@@ -1,4 +1,4 @@
-package sample;
+package sample.model;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -13,12 +13,14 @@ public class OrderWithData {
     private final SimpleIntegerProperty price;
     private final SimpleStringProperty dateOfBuy;
     private final SimpleStringProperty employee;
+    private  int employeeId;
     private  int bookId;
     private  int customerId;
 
     public OrderWithData(int id, String customer, String book, String genre,
                          String author, Integer price, String dateOfBuy,
-                         String employee, int bookId,
+                         String employee,
+                         int employeeId, int bookId,
                          int customerId) {
         this.id = id;
 
@@ -29,6 +31,7 @@ public class OrderWithData {
         this.price = new SimpleIntegerProperty(price);
         this.dateOfBuy = new SimpleStringProperty(dateOfBuy);
         this.employee = new SimpleStringProperty(employee);
+        this.employeeId = employeeId;
         this.bookId = bookId;
         this.customerId = customerId;
     }
@@ -59,10 +62,6 @@ public class OrderWithData {
 
     public SimpleStringProperty dateOfBuyProperty() {
         return dateOfBuy;
-    }
-
-    public SimpleStringProperty employeeProperty() {
-        return employee;
     }
 
     public int getId() {
@@ -113,13 +112,14 @@ public class OrderWithData {
         this.dateOfBuy.set(dateOfBuy);
     }
 
-    public String getEmployee() {
-        return employee.get();
+    public int getEmployeeId() {
+        return employeeId;
     }
 
-    public void setEmployee(String employee) {
-        this.employee.set(employee);
+    public void setEmployeeId(int employeeId) {
+        this.employeeId = employeeId;
     }
+
 
     public void setId(int id) {
         this.id = id;
@@ -140,5 +140,18 @@ public class OrderWithData {
 
     public void setCustomerId(int customerId) {
         this.customerId = customerId;
+    }
+
+
+    public void setEmployee(String employee) {
+        this.employee.set(employee);
+    }
+
+    public String getEmployee() {
+        return employee.get();
+    }
+
+    public SimpleStringProperty employeeProperty() {
+        return employee;
     }
 }

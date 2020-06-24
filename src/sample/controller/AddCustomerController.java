@@ -1,4 +1,4 @@
-package sample;
+package sample.controller;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import sample.model.Customer;
 
 public class AddCustomerController {
 
@@ -18,6 +19,9 @@ public class AddCustomerController {
 
     @FXML
     private TextField CustomerField;
+
+    @FXML
+    private TextField PhoneField;
 
     @FXML
     private Button AddButton;
@@ -39,13 +43,15 @@ public class AddCustomerController {
             DataBase db = new DataBase();
 
             String cust = CustomerField.getText().trim();
+            Integer phoneNumber = Integer.valueOf(PhoneField.getText().trim());
 
-            Customer customer = new Customer(0, cust);
+            Customer customer = new Customer(0, cust, phoneNumber);
             try {
                 db.addCustomer(customer);
-            } catch (SQLException | ClassNotFoundException e) {
+            } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
+
 
             AddButton.getScene().getWindow().hide();
         });

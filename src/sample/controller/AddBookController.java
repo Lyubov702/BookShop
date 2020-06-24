@@ -1,4 +1,4 @@
-package sample;
+package sample.controller;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import sample.model.Book;
 
 public class AddBookController {
 
@@ -55,9 +56,9 @@ public class AddBookController {
         String author = AuthorField.getText().trim();
         Integer price = Integer.valueOf(PriceField.getText().trim());
 
-        Book bookr = new Book(0, book, genre, author, price);
+        Book book1 = new Book(0, book, genre, author, price);
         try {
-            db.addBook(bookr);
+            db.addBook(book1);
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }

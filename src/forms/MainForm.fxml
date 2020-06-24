@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" style="-fx-background-color: #2E3348;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controller.MainFormController">
+   <children>
+      <AnchorPane layoutY="82.0" style="-fx-background-color: #FAFAFA;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
+         <children>
+            <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+              <tabs>
+                <Tab text="Orders">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <TableView fx:id="tableOrders" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
+                                <columns>
+                                  <TableColumn fx:id="Customer" prefWidth="107.0" text="Customer" />
+                                  <TableColumn fx:id="Book" prefWidth="112.0" text="Book" />
+                                    <TableColumn fx:id="Genre" prefWidth="103.0" text="Genre" />
+                                    <TableColumn fx:id="Author" prefWidth="96.0" text="Author" />
+                                    <TableColumn fx:id="Price" prefWidth="78.0" text="Price" />
+                                    <TableColumn fx:id="DateOfBuy" prefWidth="83.0" text="Date Of Buy" />
+                                    <TableColumn fx:id="Employee" prefWidth="94.0" text="Employee" />
+                                </columns>
+                              </TableView>
+                              <Button fx:id="Add" mnemonicParsing="false" prefHeight="34.0" prefWidth="100.0" text="Add record" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="242.0" />
+                              <Button fx:id="Edit" mnemonicParsing="false" prefHeight="34.0" prefWidth="100.0" text="Edit record" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="128.0" />
+                              <Button fx:id="Delete" mnemonicParsing="false" prefHeight="34.0" prefWidth="100.0" text="Delete record" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="14.0" />
+                           </children>
+                        </AnchorPane>
+                  </content>
+                </Tab>
+                <Tab text="Books">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <TableView fx:id="tableBook" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
+                                 <columns>
+                                    <TableColumn fx:id="Book1" prefWidth="215.0" text="Book" />
+                                    <TableColumn fx:id="Genre1" prefWidth="148.0" text="Genre" />
+                                    <TableColumn fx:id="Author1" prefWidth="172.0" text="Author" />
+                                    <TableColumn fx:id="Price1" prefWidth="140.0" text="Price" />
+                                 </columns>
+                              </TableView>
+                              <Button fx:id="addBook" layoutX="544.0" layoutY="341.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="100.0" text="Add book" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="55.0" />
+                           </children>
+                        </AnchorPane>
+                  </content>
+                </Tab>
+                  <Tab text="Customers">
+                     <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <TableView fx:id="tableCustomers" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
+                                 <columns>
+                                    <TableColumn fx:id="Customer11" minWidth="0.0" prefWidth="415.0" text="Name" />
+                                    <TableColumn fx:id="Phone" prefWidth="258.0" text="Phone" />
+                                 </columns>
+                              </TableView>
+                              <Button fx:id="AddCustomer" mnemonicParsing="false" prefHeight="34.0" prefWidth="100.0" text="Add customer" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="55.0" />
+                           </children>
+                        </AnchorPane>
+                     </content>
+                  </Tab>
+                  <Tab text="Employee">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <TableView fx:id="tableEmployee" layoutX="14.0" layoutY="14.0" prefHeight="320.0" prefWidth="672.0">
+                                <columns>
+                                  <TableColumn fx:id="employeeName" prefWidth="386.0" text="Name" />
+                                  <TableColumn fx:id="education" minWidth="0.0" prefWidth="284.0" text="Education" />
+                                </columns>
+                              </TableView>
+                              <Button fx:id="addEmployeeButton" layoutX="562.0" layoutY="344.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="109.0" text="Add employee" />
+                           </children>
+                        </AnchorPane>
+                    </content>
+                  </Tab>
+              </tabs>
+            </TabPane>
+         </children>
+      </AnchorPane>
+      <Label layoutX="241.0" layoutY="15.0" prefHeight="49.0" prefWidth="192.0" text="Book Shop" textAlignment="CENTER" textFill="WHITE" AnchorPane.bottomAnchor="436.0" AnchorPane.leftAnchor="255.0" AnchorPane.rightAnchor="250.0" AnchorPane.topAnchor="15.0">
+         <font>
+            <Font name="Book Antiqua" size="38.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

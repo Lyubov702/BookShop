@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="343.0" style="-fx-background-color: #2E3348;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controller.AddEmployeeController">
+<children>
+    <Label layoutX="76.0" layoutY="14.0" prefHeight="49.0" prefWidth="192.0" text="Book Shop" textAlignment="CENTER" textFill="WHITE" AnchorPane.leftAnchor="76.0" AnchorPane.rightAnchor="75.0">
+        <font>
+            <Font name="Book Antiqua" size="38.0" />
+        </font>
+    </Label>
+      <AnchorPane layoutY="74.0" prefHeight="430.0" prefWidth="343.0" style="-fx-background-color: #FAFAFA;">
+         <children>
+            <TextField fx:id="EmpField" alignment="CENTER" layoutX="76.0" layoutY="102.0" prefHeight="49.0" prefWidth="192.0" promptText="Employee" AnchorPane.bottomAnchor="279.0" AnchorPane.leftAnchor="76.0" AnchorPane.rightAnchor="75.0">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </TextField>
+            <Button fx:id="AddButton" layoutX="183.0" layoutY="325.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="127.0" text="Add" AnchorPane.bottomAnchor="56.0" AnchorPane.rightAnchor="33.0">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Button>
+            <Label layoutX="125.0" layoutY="59.0" text="Employee">
+               <font>
+                  <Font size="22.0" />
+               </font>
+            </Label>
+            <Label layoutX="124.0" layoutY="183.0" text="Education">
+               <font>
+                  <Font size="22.0" />
+               </font>
+            </Label>
+            <TextField fx:id="EducationField" alignment="CENTER" layoutX="77.0" layoutY="222.0" prefHeight="49.0" prefWidth="192.0" promptText="Education">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </TextField>
+         </children>
+      </AnchorPane>
+</children>
+</AnchorPane>
